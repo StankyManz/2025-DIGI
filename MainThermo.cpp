@@ -5,7 +5,7 @@
 const char* ssid = "YOUR_SSID";
 const char* password = "YOUR_PASSWORD";
 
-#define THERMISTOR_PIN A0  // Use your actual analog pin
+#define THERMISTOR_PIN A0  // Use actual analog pin when known
 float tempThreshold = 30.0; // Default temperature threshold
 
 AsyncWebServer server(80);
@@ -32,7 +32,6 @@ void initWiFi() {
   Serial.println(WiFi.localIP());
 }
 
-// Dummy processor for %STATE% or other HTML variables
 String processor(const String& var) {
   if (var == "THRESHOLD") {
     return String(tempThreshold);
@@ -40,17 +39,15 @@ String processor(const String& var) {
   return String();
 }
 
-// ====== GET TEMPERATURE (SIMPLE) ======
+// Getting Temp
 
 float readThermistorC() {
   int raw = analogRead(THERMISTOR_PIN);
-  float voltage = raw * (3.3 / 4095.0); // ESP32 ADC resolution
-  // For demo: map voltage to fake Celsius range
-  float temperature = (voltage - 0.5) * 100; // Simulated TMP36
+  float voltage = raw * (3.3 / 4095.0);
+  float temperature = (voltage - 0.5) * 100;
   return temperature;
 }
 
-// ====== SETUP ======
 
 void setup() {
   Serial.begin(115200);
@@ -58,12 +55,11 @@ void setup() {
   initLittleFS();
   pinMode(THERMISTOR_PIN, INPUT);
 
-  // Serve main webpage
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(LittleFS, "/index.html", "text/html", false, processor);
   });
 
-  // Set threshold from client (e.g. /set?value=28.5)
+  // Setting threshold
   server.on("/set", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (request->hasParam("value")) {
       tempThreshold = request->getParam("value")->value().toFloat();
@@ -73,7 +69,6 @@ void setup() {
     request->send(200, "text/plain", "Threshold updated");
   });
 
-  // Endpoint to get live temp (for JS)
   server.on("/temp", HTTP_GET, [](AsyncWebServerRequest *request) {
     float currentTemp = readThermistorC();
     request->send(200, "text/plain", String(currentTemp));
@@ -82,17 +77,16 @@ void setup() {
   server.begin();
 }
 
-// ====== LOOP ======
 
 void loop() {
   float currentTemp = readThermistorC();
 
   if (currentTemp > tempThreshold) {
     Serial.println("Temperature above threshold");
-    // Add action here (turn on fan, etc.)
+    // Add alarm function here
   } else {
     Serial.println("Temperature normal");
   }
 
-  delay(2000); // Read every 2s
+  delay(2000); // Read every 2 seconds
 }
