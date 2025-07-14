@@ -1,17 +1,19 @@
 #include <WiFi.h>
-#include <LittleFS.h>
+//HAN Notes - you can remove this library #include <LittleFS.h>
 #include <ESPAsyncWebServer.h>
 
+//HAN Notes - what is this chunk of code used for?
 const char* ssid = "YOUR_SSID";
 const char* password = "YOUR_PASSWORD";
 
 #define THERMISTOR_PIN A0  // Use actual analog pin when known
 float tempThreshold = 30.0; // Default temperature threshold
 
+//HAN Notes - what is this object for?
 AsyncWebServer server(80);
 
 // ====== INIT FUNCTIONS ======
-
+//HAN Notes - you can delete this method
 void initLittleFS() {
   if (!LittleFS.begin(true)) {
     Serial.println("LittleFS Mount Failed");
@@ -20,6 +22,9 @@ void initLittleFS() {
   Serial.println("LittleFS Mounted Successfully");
 }
 
+/*
+  * HAN Notes - give an overview of what this method does
+  */
 void initWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -32,6 +37,9 @@ void initWiFi() {
   Serial.println(WiFi.localIP());
 }
 
+/*
+  * HAN Notes - give an overview of what this method does
+  */
 String processor(const String& var) {
   if (var == "THRESHOLD") {
     return String(tempThreshold);
@@ -40,7 +48,6 @@ String processor(const String& var) {
 }
 
 // Getting Temp
-
 float readThermistorC() {
   int raw = analogRead(THERMISTOR_PIN);
   float voltage = raw * (3.3 / 4095.0);
@@ -48,13 +55,16 @@ float readThermistorC() {
   return temperature;
 }
 
-
+/*
+  * HAN Notes - give an overview of what this method does
+  */
 void setup() {
   Serial.begin(115200);
   initWiFi();
   initLittleFS();
   pinMode(THERMISTOR_PIN, INPUT);
 
+  //HAN Notes - I would use the code for my simple server rather than keeping on with the LittleFS code
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(LittleFS, "/index.html", "text/html", false, processor);
   });
@@ -77,7 +87,9 @@ void setup() {
   server.begin();
 }
 
-
+/*
+  * HAN Notes - give an overview of what this method does
+  */
 void loop() {
   float currentTemp = readThermistorC();
 
