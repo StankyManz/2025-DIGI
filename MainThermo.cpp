@@ -13,14 +13,6 @@ float tempThreshold = 30.0; // Default temperature threshold
 AsyncWebServer server(80);
 
 // ====== INIT FUNCTIONS ======
-//HAN Notes - you can delete this method
-void initLittleFS() {
-  if (!LittleFS.begin(true)) {
-    Serial.println("LittleFS Mount Failed");
-    return;
-  }
-  Serial.println("LittleFS Mounted Successfully");
-}
 
 /*
   * HAN Notes - give an overview of what this method does
