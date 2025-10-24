@@ -266,26 +266,7 @@ void loop()
 
             client.println("</body>");
             client.println("</html>");
-
-            break; // leave the while loop
-          }
-          else
-          { // if you got a first newline, then clear currentLine variable }
-            currentLine = "";
-          }
-        }
-        else if (c != '\r')
-        {
-          currentLine += c; // add to the end of the current line
-        }
-        if (currentLine.endsWith("GET /H"))
-        {
-          digitalWrite(MEATPIN, HIGH); // GET /H turns the LED on
-        }
-        if (currentLine.endsWith("GET /L"))
-        {
-          digitalWrite(MEATPIN, LOW); // GET /L turns the LED off
-        }
+            
       } // end of the client.avaliable
     } // end of while loop
     // close the connection at the ESP32 end as
