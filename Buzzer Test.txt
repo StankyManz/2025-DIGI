@@ -1,0 +1,15 @@
+#include <Arduino.h>
+
+// Basic Buzzer Test on A1
+int buzzerPin = A1;  // Buzzer connected to analog pin A1
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);  // Set A1 as an output pin
+}
+
+void loop() {
+  digitalWrite(buzzerPin, HIGH);  // Turn the buzzer ON
+  delay(500);                     // Wait half a second
+  digitalWrite(buzzerPin, LOW);   // Turn the buzzer OFF
+  delay(500);                     // Wait half a second
+}
