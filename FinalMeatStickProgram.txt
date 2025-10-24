@@ -19,6 +19,8 @@ int thermoCLK = 6;
 // Using MAX6675 library to take the 3 inputs values from the pins and convert into celsius
 MAX6675 thermocouple(thermoCLK, thermoCS, thermoDO);
 
+int buzzerPin = A1;  // Connecting buzzer to analog pin A1
+
 Adafruit_ST7789 screen = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST); //library //screen working 
 
 /************
@@ -75,7 +77,7 @@ pinMode(TFT_BACKLITE, OUTPUT);
 
   Serial.println(F("screen is on")); // telling serial monitor screen is on
 
-
+  pinMode(buzzerPin, OUTPUT);  // Set busser pin A1 as an output pin
 
   Serial.println("MAX6675 test");
   // wait for MAX chip to stabilize
@@ -289,6 +291,14 @@ void loop()
   }
 </script>
 )rawliteral"); // This closes the JavaScript section 
+
+// This section sets off the buzzer if the current temperature is equal to or greater than the set settings temperature
+if (thermocouple.readCelsius() >= newTemp) { // if temperature is = or greater than set temperature
+ digitalWrite(buzzerPin, HIGH);  // Turn the buzzer ON
+  delay(500);                     // Wait half a second
+  digitalWrite(buzzerPin, LOW);   // Turn the buzzer OFF
+  delay(500);                     // Wait half a second
+}
 
             client.println("</body>"); // Sends the closing </body> tag to the client, ending the main section of the webpage
             client.println("</html>"); // Sends the closing </html> tag to the client, ending the entire HTML document

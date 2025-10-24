@@ -4,7 +4,7 @@
 int buzzerPin = A1;  // Buzzer connected to analog pin A1
 
 void setup() {
-  pinMode(buzzerPin, OUTPUT);  // Set A1 as an output pin
+  pinMode(buzzerPin, OUTPUT);  // Set buzzer pin A1 as an output pin
 }
 
 void loop() {
