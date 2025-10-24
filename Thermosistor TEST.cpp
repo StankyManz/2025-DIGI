@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_ST7789.h>
 
-const int thermistorPin = A0;  // use any ADC pin like 32–39
+const int thermistorPin = A0;  
 
 void setup() {
   Serial.begin(115200);
