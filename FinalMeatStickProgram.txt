@@ -152,8 +152,13 @@ void loop()
             client.println("<h1>The Meat Stick<h1>");    // Heading of the web page
 
             client.print("<h2>The Temperature is:  </h2>"); // h2 to make the heading smaller
+            if (thermocouple.readCelsius() >= 0 && <= 100) { // Checking if in Temperature range
             client.print(thermocouple.readCelsius()); // Printing celcius value from MAX6675 module
-            client.println("<h2> Degrees Celsius </h2>"); // Stating unit
+            client.println("<h2> Degrees Celsius </h2>"); // Stating the unit
+            } else {
+            client.println("<h2> Out of Temperature range | Must Be Between 0-100C </h2>"); // Not within Expected Boundaries
+            }
+
 
             client.println("<h2 style=\"font-family: 'Great Vibes', cursive; font-size: 36px; color: #513ccc; font-style: italic;\">Troy's Meat Guide</h2>"); //this line is giving the heading "Connors Meat Guide" its font, italics and colour (Royal Blue)
 
